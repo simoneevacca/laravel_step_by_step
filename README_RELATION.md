@@ -74,3 +74,46 @@
     $project->type->id
 
 ```
+---------------- RELAZIONE MANY TO MANY ------------------------------------
+
+1- in ciascuno dei 2 modelli creare la funzione per collegare l'altro:
+
+```php
+
+public function projects() {    
+        return $this->belongsToMany('App\Models\Projects');
+    }
+
+    public function technoligies() {    
+        return $this->belongsToMany('App\Models\Technology');
+    }
+
+```
+
+2- creare la migrazione per la tabella pivot con il seguente comando da terminale: 
+mettere i nomi in ordine alfabetico (in questo caso project e technology)
+
+```bash
+
+php artisan make:migration create_project_technology_table
+
+```
+
+3- per inserire i dati nella tabella pivot usare attach:
+4- per rimuoverli usare detach
+
+```php
+
+    $project->technoligies()->attach($val_data['technologies']);
+
+```
+
+5- per aggiungere e rimuovere contemporaneamente dei dati usare sync:
+sync() accetta un array con all'interno gli id della tabella pivot e rimuove tutti quelli non inseriti
+
+```php
+
+$project->technoligies()->sync($val_data['technologies']);
+
+```
+
